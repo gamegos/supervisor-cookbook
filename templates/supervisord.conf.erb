@@ -1,0 +1,107 @@
+; supervisor config file
+;
+; Template:: supervisord.conf.erb
+; Cookbook Name:: supervisor
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Sample supervisor config file.
+;
+; For more information on the config file, please see:
+; http://supervisord.org/configuration.html
+;
+; Notes:
+;  - Shell expansion ("~" or "$HOME") is not supported.  Environment
+;    variables can be expanded using this syntax: "%(ENV_HOME)s".
+;  - Quotes around values are not supported, except in the case of
+;    the environment= options as shown below.
+;  - Comments must have a leading space: "a=b ;comment" not "a=b;comment".
+;  - Command will be truncated if it looks like a config file comment, e.g.
+;    "command=bash -c 'foo ; bar'" will truncate to "command=bash -c 'foo ".
+
+;;;;;;;;;; Unix Http Server
+[unix_http_server]
+file=<%= @config.socket_file %>             ; the path to the socket file
+chmod=<%= @config.unix_http_server_chmod %> ; socket file mode (default 0700)
+chown=<%= @config.unix_http_server_chown %> ; socket file uid:gid owner
+<% if @config.unix_http_server_username %>
+username=<%= @config.unix_http_server_username %>
+<% end %>
+<% if @config.unix_http_server_password %>
+password=<%= @config.unix_http_server_password %>
+<% end %>
+
+;;;;;;;;; Inet Http Server
+<% if @config.inet_port %>
+[inet_http_server]              ; inet (TCP) server disabled by default
+port=<%= @config.inet_port %>   ; ip_address:port specifier, *:port for all iface
+<% if @config.inet_username %>
+username=<%= @config.inet_username %>
+<% end %>
+<% if @config.inet_password %>
+password=<%= @config.inet_password %>
+<% end %>
+<% else %>
+;[inet_http_server]         ; inet (TCP) server disabled by default
+;port=127.0.0.1:9001        ; ip_address:port specifier, *:port for all iface
+;username=user              ; default is no username (open server)
+;password=123               ; default is no password (open server)
+<% end %>
+
+;;;;;;;;; Supervisord
+[supervisord]
+logfile=<%= @config.supervisord_logfile %>                          ; main log file; default $CWD/supervisord.log
+logfile_maxbytes=<%= @config.supervisord_logfile_maxbytes %>        ; max main logfile bytes b4 rotation; default 50MB
+logfile_backups=<%= @config.supervisord_logfile_backups %>          ; # of main logfile backups; 0 means none, default 10
+loglevel=<%= @config.supervisord_loglevel %>                        ; log level; default info; others: debug,warn,trace
+pidfile=<%= @config.supervisord_pidfile %>                          ; supervisord pidfile; default supervisord.pid
+nodaemon=<%= @config.supervisord_nodaemon ? 'true' : 'false' %>     ; start in foreground if true; default false
+minfds=<%= @config.supervisord_minfds %>                            ; min. avail startup file descriptors; default 1024
+minprocs=<%= @config.supervisord_minprocs %>                        ; min. avail process descriptors;default 200
+nocleanup=<%= @config.supervisord_nocleanup ? 'true' : 'false' %>   ; don't clean up tempfiles at start; default false
+<% if @config.supervisord_umask %>
+umask=<%= @config.supervisord_umask %>                              ; process file creation umask; default 022
+<% end %>
+<% if @config.supervisord_user %>
+user=<%= @config.supervisord_user %>                                ; default is current user, required if root
+<% end %>
+identifier=<%= @config.supervisord_identifier %>                    ; supervisord identifier, default is 'supervisor'
+;directory=/tmp                                                     ; default is not to cd during start
+childlogdir=<%= @config.supervisord_log_directory %>                ; 'AUTO' child log dir, default $TEMP
+environment=<%= @config.supervisord_environment.sort.map{|k,v| "#{k}=\"#{v}\""}.join(',') %>
+strip_ansi=<%= @config.supervisord_strip_ansi ? 'true' : 'false' %> ; strip ansi escape codes in logs; def. false
+
+
+;;;;;;;;; RPC
+; The rpcinterface:supervisor section must remain in the config file for
+; RPC (supervisorctl/web interface) to work.  Additional interfaces may be
+; added by defining them in separate [rpcinterface:x] sections.
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+;;;;;;;;; Supervisorctl
+; The supervisorctl section configures how supervisorctl will connect to
+; supervisord.  configure it match the settings in either the unix_http_server
+; or inet_http_server section.
+
+; The supervisorctl section configures how supervisorctl will connect to
+; supervisord.  configure it match the settings in either the unix_http_server
+; or inet_http_server section.
+
+[supervisorctl]
+serverurl=unix://<%= @config.socket_file %> ; use a unix:// URL  for a unix socket
+;serverurl=http://127.0.0.1:9001            ; use an http:// url to specify an inet socket
+;username=chris                             ; should be same as in [*_http_server] if set
+;password=123                               ; should be same as in [*_http_server] if set
+;prompt=mysupervisor                        ; cmd line prompt (default "supervisor")
+;history_file=~/.sc_history                 ; use readline history if available
+
+;;;;;;;;; Include
+; The [include] section can just contain the "files" setting.  This
+; setting can list multiple files (separated by whitespace or
+; newlines).  It can also contain wildcards.  The filenames are
+; interpreted as relative to this file.  Included files *cannot*
+; include files themselves.
+
+[include]
+files = <%= @config.include_files.is_a?(String) ? @config.include_files : @config.include_files.join(',') %>

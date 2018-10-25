@@ -1,0 +1,59 @@
+[<%= @service.type %>:<%= @service.name %>]
+command=<%= @service.command %>           ; the program (relative uses PATH, can take args)
+process_name=<%= @service.process_name %> ; process_name expr (default %(program_name)s)
+numprocs=<%= @service.numprocs %>         ; number of processes copies to start (def 1)
+numprocs_start=<%= @service.numprocs_start %>
+<% if @service.directory %>
+directory=<%= @service.directory %>       ; directory to cwd to before exec (def no cwd)
+<% end %>
+<% if @service.umask %>
+umask=<%= @service.umask %>               ; umask for process (default None)
+<% end %>
+priority=<%= @service.priority %>         ; the relative start priority (default 999)
+autostart=<%= @service.autostart ? 'true' : 'false' %>       ; start at supervisord start (default: true)
+autorestart=<%= @service.autorestart.is_a?(String) ? @service.autorestart : ( @service.autorestart ? 'true' : 'false' )  %>  ; when to restart if exited after running (def: unexpected)
+startsecs=<%= @service.startsecs %>       ; # of secs prog must stay up to be running (def. 1)
+startretries=<%= @service.startretries %> ; max # of serial start failures when starting (default 3)
+exitcodes=<%= @service.exitcodes.join(',') %>       ; 'expected' exit codes used with autorestart (default 0,2)
+stopsignal=<%= @service.stopsignal %>     ; signal used to kill process (default TERM)
+stopwaitsecs=<%= @service.stopwaitsecs %> ; max num secs to wait b4 SIGKILL (default 10)
+stopasgroup=<%= @service.stopasgroup %>   ; send stop signal to the UNIX process group (default false)
+killasgroup=<%= @service.killasgroup %>   ; SIGKILL the UNIX process group (def false)
+<% if @service.user %>
+user=<%= @service.user %>                 ; setuid to this UNIX account to run the program
+<% end %>
+stdout_logfile=<%= @service.stdout_logfile %>                    ; stdout log path, NONE for none; default AUTO
+stdout_logfile_maxbytes=<%= @service.stdout_logfile_maxbytes %>  ; max # logfile bytes b4 rotation (default 50MB)
+stdout_logfile_backups=<%= @service.stdout_logfile_backups %>    ; # of stdout logfile backups (0 means none, default 10)
+stdout_events_enabled=<%= @service.stdout_events_enabled %>      ; emit events on stdout writes (default false)
+stderr_logfile=<%= @service.stderr_logfile %>                    ; stderr log path, NONE for none; default AUTO
+stderr_logfile_maxbytes=<%= @service.stderr_logfile_maxbytes %>  ; max # logfile bytes b4 rotation (default 50MB)
+stderr_logfile_backups=<%= @service.stderr_logfile_backups %>    ; # of stderr logfile backups (0 means none, default 10)
+stderr_events_enabled=<%= @service.stderr_events_enabled ? 'true' : 'false' %>      ; emit events on stderr writes (default false)
+<% unless @service.environment.empty? %>
+environment=<%= @service.environment.sort.map{|k,v| "#{k}=\"#{v}\""}.join(',') %> ; process environment additions (def no adds)
+<% end %>
+serverurl=<%= @service.serverurl %>       ; override serverurl computation (childutils)
+;;; Program=> redirect_stderr=true          ; redirect proc stderr to stdout (default false)
+;;; EventListeners=> redirect_stderr=false  ; redirect_stderr=true is not allowed for eventlisteners
+redirect_stderr=<%= @service.redirect_stderr ? 'true' : 'false' %>
+
+<% if @service.type == 'eventlistener' %>
+;;; Eventlisteners [eventlistener:x] sections have a few keys which [program:x] sections do not have. (events, buffer_size, result_handler)
+events=<%= @service.eventlistener_events.join(',') %>
+buffer_size=<%= @service.eventlistener_buffer_size %>
+<% end %>
+
+<% if @service.type == 'fcgi-program'%>
+;;; Fcgi-Programs [fcgi-program:x] sections have a few keys which [program:x] sections do not have. (socket, socket_owner, socket_mode)
+socket=<%= @service.fcgi_socket %>
+socket_owner=<%= @service.fcgi_socket_owner %>
+socket_mode=<%= @service.fcgi_socket_mode %>
+<% end %>
+
+;;; Note that all the options available to [program:x] sections are respected by 'eventlistener' sections except for 'stdout_capture_maxbytes'
+;;; Eventlisteners cannot emit process communication events on 'stdout', but can emit on 'stderr'
+<% unless @service.type == 'eventlistener' %>
+stdout_capture_maxbytes=<%= @service.stdout_capture_maxbytes %>  ; number of bytes in 'capturemode' (default 0)
+<% end %>
+stderr_capture_maxbytes=<%= @service.stderr_capture_maxbytes %>  ; number of bytes in 'capturemode' (default 0)
