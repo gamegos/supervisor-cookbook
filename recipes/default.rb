@@ -15,10 +15,12 @@ supervisor_process 'cat' do
 end
 
 supervisor_process 'cat' do
+  type 'program'
   command '/bin/cat'
 end
 
 supervisor_process 'vi' do
+  type 'program'
   command '/usr/bin/vi'
 end
 
