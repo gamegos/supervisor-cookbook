@@ -19,9 +19,37 @@ This cookbook installs and configures [Supervisor](https://github.com/Supervisor
 - poise-python
 - poise-service
 
+# Usage
+
+Here's a quick example of installing the supervisord and adding some programs.
+
+```ruby
+supervisor_install '3.3'
+
+supervisor_config '/etc/supervisor' do
+  action :create
+end
+
+supervisor_process 'cat' do
+  type 'program'
+  command '/bin/cat'
+end
+
+supervisor_process 'vi' do
+  type 'program'
+  command '/usr/bin/vi'
+end
+
+supervisor_group 'cat' do
+  programs ['cat']
+end
+
+supervisor_service 'supervisor'
+```
+
 # Recipes
 
-- **default** - installs the supervisor and adds some processes.
+- **default** - installs the supervisord.
 
 # Resources
 
