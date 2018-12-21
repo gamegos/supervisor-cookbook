@@ -35,6 +35,8 @@ property :include_files, [String, Array], default: lazy {
   "#{supervisor_directory}/*.conf"
 }
 
+property :template, String, default: 'gamegos-supervisor'
+
 action :create do
   supervisor_config_directory = new_resource.supervisor_directory
   supervisor_config_file = "#{supervisor_config_directory}/supervisord.conf"
@@ -62,6 +64,7 @@ action :create do
   end
 
   template 'supervisord_config_file' do
+    cookbook new_resource.template
     path supervisor_config_file
     source 'supervisord.conf.erb'
     owner 'root'

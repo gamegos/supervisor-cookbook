@@ -45,9 +45,12 @@ property :fcgi_socket, String, default: 'unix:///var/run/supervisor/%(program_na
 property :fcgi_socket_owner, [String, NilClass], default: nil
 property :fcgi_socket_mode, String, default: '0700'
 
+property :template, String, default: 'gamegos-supervisor'
+
 action :create do
   unique_name_for_process = "#{new_resource.type}_#{new_resource.name}"
   template "supervisor_#{unique_name_for_process}" do
+    cookbook new_resource.template
     path lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" }
     source 'process.conf.erb'
     owner 'root'
