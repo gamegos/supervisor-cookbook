@@ -9,8 +9,8 @@ property :process_name, String, default: '%(program_name)s'
 property :numprocs, Integer, default: 1
 property :numprocs_start, Integer, default: 0
 property :priority, Integer, default: 999
-property :autostart, [TrueClass, FalseClass], default: true
-property :autorestart, [String, Symbol, TrueClass, FalseClass], default: :unexpected
+property :autostart, [TrueClass, FalseClass], default: false
+property :autorestart, [TrueClass, FalseClass], default: false
 property :startsecs, Integer, default: 1
 property :startretries, Integer, default: 3
 property :exitcodes, Array, default: [0, 2]

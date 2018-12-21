@@ -10,8 +10,8 @@ directory=<%= @service.directory %>       ; directory to cwd to before exec (def
 umask=<%= @service.umask %>               ; umask for process (default None)
 <% end %>
 priority=<%= @service.priority %>         ; the relative start priority (default 999)
-autostart=<%= @service.autostart ? 'true' : 'false' %>       ; start at supervisord start (default: true)
-autorestart=<%= @service.autorestart.is_a?(String) ? @service.autorestart : ( @service.autorestart ? 'true' : 'false' )  %>  ; when to restart if exited after running (def: unexpected)
+autostart=<%= @service.autostart ? 'true' : 'false' %>       ; start at supervisord start (default: false)
+autorestart=<%= @service.autorestart ? 'true' : 'false'  %>  ; when to restart if exited after running (defult: false)
 startsecs=<%= @service.startsecs %>       ; # of secs prog must stay up to be running (def. 1)
 startretries=<%= @service.startretries %> ; max # of serial start failures when starting (default 3)
 exitcodes=<%= @service.exitcodes.join(',') %>       ; 'expected' exit codes used with autorestart (default 0,2)
