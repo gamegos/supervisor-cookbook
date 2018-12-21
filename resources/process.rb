@@ -16,8 +16,8 @@ property :startretries, Integer, default: 3
 property :exitcodes, Array, default: [0, 2]
 property :stopsignal, [String, Symbol], default: :TERM
 property :stopwaitsecs, Integer, default: 10
-property :stopasgroup,  [TrueClass, FalseClass], default: false
-property :killasgroup,  [TrueClass, FalseClass], default: false
+property :stopasgroup,  [TrueClass, FalseClass], default: true
+property :killasgroup,  [TrueClass, FalseClass], default: true
 property :user, [String, NilClass], default: nil
 property :redirect_stderr, [TrueClass, FalseClass], default: false
 property :environment, Hash, default: {}
