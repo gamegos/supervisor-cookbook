@@ -15,5 +15,6 @@ action :create do
     group 'root'
     mode '644'
     variables group: new_resource
+    notifies :reload, 'supervisor_service[supervisor]', :delayed
   end
 end

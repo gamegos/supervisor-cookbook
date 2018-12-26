@@ -70,8 +70,7 @@ action :create do
     owner 'root'
     group 'root'
     mode '644'
-    variables(
-      config: new_resource
-    )
+    variables config: new_resource
+    notifies :reload, 'supervisor_service[supervisor]', :delayed
   end
 end

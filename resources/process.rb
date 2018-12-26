@@ -61,5 +61,6 @@ action :create do
       name: clean_name,
       service: new_resource
     )
+    notifies :reload, 'supervisor_service[supervisor]', :delayed
   end
 end
