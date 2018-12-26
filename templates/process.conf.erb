@@ -1,4 +1,4 @@
-[<%= @service.type %>:<%= @service.name %>]
+[<%= @service.type %>:<%= @clean_name %>]
 command=<%= @service.command %>           ; the program (relative uses PATH, can take args)
 process_name=<%= @service.process_name %> ; process_name expr (default %(program_name)s)
 numprocs=<%= @service.numprocs %>         ; number of processes copies to start (def 1)

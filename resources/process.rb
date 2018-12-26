@@ -48,7 +48,8 @@ property :fcgi_socket_mode, String, default: '0700'
 property :template, String, default: 'gamegos-supervisor'
 
 action :create do
-  unique_name_for_process = "#{new_resource.type}_#{new_resource.name}"
+  clean_name = new_resource.name.downcase.tr(' ', '_')
+  unique_name_for_process = "#{new_resource.type}_#{clean_name}"
   template "supervisor_#{unique_name_for_process}" do
     cookbook new_resource.template
     path lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" }
@@ -57,6 +58,7 @@ action :create do
     group 'root'
     mode '644'
     variables(
+      name: clean_name,
       service: new_resource
     )
   end
