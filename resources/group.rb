@@ -18,3 +18,11 @@ action :create do
     notifies :reload, 'supervisor_service[supervisor]', :delayed
   end
 end
+
+action :delete do
+  file 'delete specific group configuration file' do
+    path lazy { "#{node.run_state['supervisor']['directory']}/group_#{new_resource.name}.conf" }
+    action :delete
+    notifies :reload, 'supervisor_service[supervisor]', :delayed
+  end
+end
