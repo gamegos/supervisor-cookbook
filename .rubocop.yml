@@ -4,3 +4,6 @@ Metrics/LineLength:
 Metrics/BlockLength:
   Exclude:
     - 'resources/config.rb'
+
+Style/PercentLiteralDelimiters:
+  Enabled: false

@@ -9,7 +9,7 @@ property :template, String, default: 'gamegos-supervisor'
 action :create do
   declare_resource(:template, "supervisor_group_#{new_resource.name}") do
     cookbook new_resource.template
-    path lazy { "#{node.run_state['supervisor']['directory']}/group_#{new_resource.name}.conf" }
+    path(lazy { "#{node.run_state['supervisor']['directory']}/group_#{new_resource.name}.conf" })
     source 'group.conf.erb'
     owner 'root'
     group 'root'
@@ -21,7 +21,7 @@ end
 
 action :delete do
   file 'delete specific group configuration file' do
-    path lazy { "#{node.run_state['supervisor']['directory']}/group_#{new_resource.name}.conf" }
+    path(lazy { "#{node.run_state['supervisor']['directory']}/group_#{new_resource.name}.conf" })
     action :delete
     notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
   end

@@ -5,7 +5,7 @@ license 'GPL-3.0'
 description 'Installs/Configures supervisor'
 long_description 'Installs/Configures supervisor'
 chef_version '>= 12.0'
-%w[amazon centos debian redhat ubuntu].each do |os|
+%w(amazon centos debian redhat ubuntu).each do |os|
   supports os
 end
 version '1.0.0'

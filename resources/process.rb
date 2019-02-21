@@ -52,7 +52,7 @@ action :create do
   unique_name_for_process = "#{new_resource.type}_#{clean_name}"
   declare_resource(:template, "supervisor_#{unique_name_for_process}") do
     cookbook new_resource.template
-    path lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" }
+    path(lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" })
     source 'process.conf.erb'
     owner 'root'
     group 'root'
@@ -69,7 +69,7 @@ action :delete do
   clean_name = new_resource.name.downcase.tr(' ', '_')
   unique_name_for_process = "#{new_resource.type}_#{clean_name}"
   file 'delete specific program configuration file' do
-    path lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" }
+    path(lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" })
     action :delete
     notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
