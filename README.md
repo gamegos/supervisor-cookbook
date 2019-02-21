@@ -7,7 +7,7 @@ This cookbook installs and configures [Supervisor](https://github.com/Supervisor
 ## Platforms
 
 - Ubuntu 14.04+
-- Centos 8+
+- Centos 7+
 - Debian 7+
 
 ## Chef
@@ -26,9 +26,7 @@ Here's a quick example of installing the supervisord and adding some programs.
 ```ruby
 supervisor_install '3.3'
 
-supervisor_config '/etc/supervisor' do
-  action :create
-end
+supervisor_config 'supervisor'
 
 supervisor_process 'cat' do
   type 'program'
