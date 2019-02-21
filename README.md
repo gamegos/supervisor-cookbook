@@ -12,7 +12,7 @@ This cookbook installs and configures [Supervisor](https://github.com/Supervisor
 
 ## Chef
 
-- Chef 13+
+- Chef 12+
 
 ## Cookbooks
 
@@ -82,6 +82,7 @@ Define configurations of supervisord.
 - `unix_http_server_chown` - (is: String)
 - `unix_http_server_username` - (is: String)
 - `unix_http_server_password` - (is: String)
+- `supervisord_config_directory` - (is: String)
 - `supervisord_log_directory` - (is: String)
 - `supervisord_logfile` - (is: String)
 - `supervisord_logfile_maxbytes` - (is: String)
@@ -105,7 +106,9 @@ Define configurations of supervisord.
 #### Examples
 
 ```ruby
-supervisor_config '/etc/supervisor' do
+# Create a custom config
+supervisor_config 'supervisor' do
+  supervisord_config_directory '/etc/supervisor'
   socket_file '/run/supervisor.sock'
   inet_port '0.0.0.0:9010'
   inet_username 'randy'
@@ -117,8 +120,13 @@ end
 ```
 
 ```ruby
-supervisor_config '/home/rudy/supervisor'
+# Create a default config
+supervisor_config 'supervisor'
 ```
+
+#### Notes
+
+The name property of the resource should always just be `supervisor`.
 
 ### supervisor_process
 
@@ -221,5 +229,9 @@ Creates Supervisor service for your systems.
 #### Examples
 
 ```ruby
-supervisor_service 'not_important'
+supervisor_service 'supervisor'
 ```
+
+#### Note
+
+The name property of the resource should always just be `supervisor`.

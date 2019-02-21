@@ -4,9 +4,11 @@ resource_name :supervisor_install
 property :version, String, name_property: true
 
 action :create do
-  node.override['poise-python']['options']['pip_version'] = '18.0'
-
-  python_runtime '2'
+  python_runtime 'supervisor' do
+    provider :system
+    version '2'
+    pip_version '18.0'
+  end
 
   python_package 'supervisor' do
     version new_resource.version
