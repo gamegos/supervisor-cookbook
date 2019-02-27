@@ -1,7 +1,6 @@
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources.html
 resource_name :supervisor_config
 
-property :name, String, name_property: true
 property :supervisord_config_directory, String, default: '/etc/supervisor'
 property :socket_file, String, default: '/var/run/supervisor.sock'
 

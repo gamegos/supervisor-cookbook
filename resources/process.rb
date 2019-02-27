@@ -1,7 +1,7 @@
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources.html
 resource_name :supervisor_process
 
-property :name, String, name_property: true
+property :defined_process_name, String, name_property: true
 property :type, String, required: true, equal_to: ['program', 'eventlistener', 'fcgi-program']
 # Program
 property :command, String, required: true
@@ -48,7 +48,7 @@ property :fcgi_socket_mode, String, default: '0700'
 property :template, String, default: 'gamegos-supervisor'
 
 action :create do
-  clean_name = new_resource.name.downcase.tr(' ', '_')
+  clean_name = new_resource.defined_process_name.downcase.tr(' ', '_')
   unique_name_for_process = "#{new_resource.type}_#{clean_name}"
   declare_resource(:template, "supervisor_#{unique_name_for_process}") do
     cookbook new_resource.template
@@ -66,7 +66,7 @@ action :create do
 end
 
 action :delete do
-  clean_name = new_resource.name.downcase.tr(' ', '_')
+  clean_name = new_resource.defined_process_name.downcase.tr(' ', '_')
   unique_name_for_process = "#{new_resource.type}_#{clean_name}"
   file 'delete specific program configuration file' do
     path(lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" })
