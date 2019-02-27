@@ -1,33 +1,39 @@
 driver:
   name: vagrant
+  vagrantfiles:
+    - test/vagrantfile_merge.rb
 
 provisioner:
   name: chef_zero
   # You may wish to disable always updating cookbooks in CI or other testing environments.
   # For example:
   #   always_update_cookbooks: <%= !ENV['CI'] %>
-  always_update_cookbooks: true
+  #always_update_cookbooks: true
+  product_name: chef
 
 verifier:
   name: inspec
 
 platforms:
   - name: ubuntu-16.04
-    driver:
-      box: bento/ubuntu-16.04
-      cachier: true
-      customize:
-        memory: 1024
-        cpus: 2
-      network:
-        - ["forwarded_port", { guest: 80, host: 8080 }]
-        - ["private_network", { ip: "192.168.33.33" }]
   - name: centos-7
 
 suites:
-  - name: default
+  - name: default-chef12
+    provisioner:
+      product_version: 12
     run_list:
-      - recipe[gamegos-supervisor::default]
+      - recipe[gamegos-supervisor::test]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes: { foo: "bar" }
+
+  - name: default-chef13
+    provisioner:
+      product_version: 13
+    run_list:
+      - recipe[gamegos-supervisor::test]
     verifier:
       inspec_tests:
         - test/integration/default

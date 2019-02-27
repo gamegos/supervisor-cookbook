@@ -1,7 +1,8 @@
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources.html
 resource_name :supervisor_config
 
-property :supervisor_directory, String, name_property: true
+property :name, String, name_property: true
+property :supervisord_config_directory, String, default: '/etc/supervisor'
 property :socket_file, String, default: '/var/run/supervisor.sock'
 
 property :unix_http_server_chmod, String, default: '700'
@@ -32,13 +33,13 @@ property :inet_username, [String, NilClass], default: nil
 property :inet_password, [String, NilClass], default: nil
 
 property :include_files, [String, Array], default: lazy {
-  "#{supervisor_directory}/*.conf"
+  "#{supervisord_config_directory}/*.conf"
 }
 
 property :template, String, default: 'gamegos-supervisor'
 
 action :create do
-  supervisor_config_directory = new_resource.supervisor_directory
+  supervisor_config_directory = new_resource.supervisord_config_directory
   supervisor_config_file = "#{supervisor_config_directory}/supervisord.conf"
   with_run_context :root do
     node.run_state['supervisor'] ||= {}
@@ -63,7 +64,7 @@ action :create do
     recursive true
   end
 
-  template 'supervisord_config_file' do
+  declare_resource(:template, 'supervisord_config_file') do
     cookbook new_resource.template
     path supervisor_config_file
     source 'supervisord.conf.erb'
@@ -71,6 +72,6 @@ action :create do
     group 'root'
     mode '644'
     variables config: new_resource
-    notifies :reload, 'supervisor_service[supervisor]', :delayed
+    notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end

@@ -1,0 +1,46 @@
+driver:
+  name: dokken
+  privileged: true
+
+transport:
+  name: dokken
+
+provisioner:
+  name: dokken
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-18.04
+    driver:
+      image: dokken/ubuntu-18.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+         - RUN /usr/bin/apt-get update
+         - RUN /usr/bin/apt-get install sudo -y
+
+  - name: centos-7
+    driver:
+      image: dokken/centos-7
+      pid_one_command: /usr/lib/systemd/systemd
+      intermediate_instructions:
+        - RUN yum -y install sudo
+
+suites:
+  - name: default-chef12
+    driver:
+      chef_version: 12
+    run_list:
+      - recipe[gamegos-supervisor::test]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+  - name: default-chef13
+    driver:
+      chef_version: 13
+    run_list:
+      - recipe[gamegos-supervisor::test]
+    verifier:
+      inspec_tests:
+        - test/integration/default

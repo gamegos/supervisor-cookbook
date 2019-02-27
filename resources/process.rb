@@ -50,9 +50,9 @@ property :template, String, default: 'gamegos-supervisor'
 action :create do
   clean_name = new_resource.name.downcase.tr(' ', '_')
   unique_name_for_process = "#{new_resource.type}_#{clean_name}"
-  template "supervisor_#{unique_name_for_process}" do
+  declare_resource(:template, "supervisor_#{unique_name_for_process}") do
     cookbook new_resource.template
-    path lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" }
+    path(lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" })
     source 'process.conf.erb'
     owner 'root'
     group 'root'
@@ -61,7 +61,7 @@ action :create do
       name: clean_name,
       service: new_resource
     )
-    notifies :reload, 'supervisor_service[supervisor]', :delayed
+    notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end
 
@@ -69,8 +69,8 @@ action :delete do
   clean_name = new_resource.name.downcase.tr(' ', '_')
   unique_name_for_process = "#{new_resource.type}_#{clean_name}"
   file 'delete specific program configuration file' do
-    path lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" }
+    path(lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" })
     action :delete
-    notifies :reload, 'supervisor_service[supervisor]', :delayed
+    notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end

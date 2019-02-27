@@ -6,7 +6,7 @@
 
 require 'spec_helper'
 
-describe 'gamegos-supervisor::default' do
+describe 'gamegos-supervisor::test' do
   context 'When all attributes are default, on Ubuntu 16.04' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:
