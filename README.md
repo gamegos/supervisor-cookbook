@@ -77,31 +77,34 @@ Define configurations of supervisord.
 
 #### Properties
 
-- `socket_file` - (is: String)
-- `unix_http_server_chmod` - (is: String)
-- `unix_http_server_chown` - (is: String)
-- `unix_http_server_username` - (is: String)
-- `unix_http_server_password` - (is: String)
-- `supervisord_config_directory` - (is: String)
-- `supervisord_log_directory` - (is: String)
-- `supervisord_logfile` - (is: String)
-- `supervisord_logfile_maxbytes` - (is: String)
-- `supervisord_logfile_backups` - (is: Integer)
-- `supervisord_loglevel` - (is: String)
-- `supervisord_pidfile` - (is: String)
-- `supervisord_nodaemon` - (is: Boolean)
-- `supervisord_minfds` - (is: Integer)
-- `supervisord_minprocs` - (is: Integer)
-- `supervisord_nocleanup` - (is: Boolean)
-- `supervisord_user` - (is: String)
-- `supervisord_umask` - (is: String)
-- `supervisord_identifier` - (is: String)
-- `supervisord_strip_ansi` - (is: Boolean)
-- `supervisord_environment` - (is: Hash)
-- `inet_port` - (is: String)
-- `inet_username` - (is: String)
-- `inet_password` - (is: String)
-- `include_files` - (is: [String, Array])
+| Property                       |       Type        |                  Default Value                   |
+| ------------------------------ | :---------------: | :----------------------------------------------: |
+| `socket_file`                  |     `String`      |           `'/var/run/supervisor.sock'`           |
+| `unix_http_server_chmod`       |     `String`      |                     `'700'`                      |
+| `unix_http_server_chown`       |     `Integer`     |                  `'root:root'`                   |
+| `unix_http_server_username`    |  `[String, Nil]`  |                      `nil`                       |
+| `unix_http_server_password`    |  `[String, Nil]`  |                      `nil`                       |
+| `supervisord_config_directory` |     `String`      |               `'/etc/supervisor'`                |
+| `supervisord_log_directory`    |     `String`      |             `'/etc/log/supervisor'`              |
+| `supervisord_logfile`          |     `String`      | `"#{supervisord_log_directory}/supervisord.log"` |
+| `supervisord_logfile_maxbytes` |     `String`      |                     `'50mb'`                     |
+| `supervisord_logfile_backups`  |     `Integer`     |                       `10`                       |
+| `supervisord_loglevel`         |     `String`      |                     `'info'`                     |
+| `supervisord_pidfile`          |     `String`      |           `'/var/run/supervisord.pid'`           |
+| `supervisord_nodaemon`         |     `Boolean`     |                     `false`                      |
+| `supervisord_minfds`           |     `Integer`     |                      `1024`                      |
+| `supervisord_minprocs`         |     `Integer`     |                      `200`                       |
+| `supervisord_nocleanup`        |     `Boolean`     |                     `false`                      |
+| `supervisord_user`             |  `[String, Nil]`  |                      `nil`                       |
+| `supervisord_umask`            |  `[String, Nil]`  |                      `nil`                       |
+| `supervisord_identifier`       |     `String`      |                  `'supervisor'`                  |
+| `supervisord_strip_ansi`       |     `Boolean`     |                     `false`                      |
+| `supervisord_environment`      |      `Hash`       |                       `{}`                       |
+| `inet_port`                    |     `String`      |                 `'0.0.0.0:9001'`                 |
+| `inet_username`                |  `[String, Nil]`  |                      `nil`                       |
+| `inet_password`                |  `[String, Nil]`  |                      `nil`                       |
+| `include_files`                | `[String, Array]` |    `"#{supervisord_config_directory}/*.conf"`    |
+| `action`                       |     `Symbol`      |                    `:create`                     |
 
 #### Examples
 
@@ -135,46 +138,50 @@ Creates a process for supervisor. The process may be a 'program', 'eventlistener
 #### Actions
 
 - `:create`
+- `:delete`
 
 #### Properties
 
-- `type` - (is: String)
-- `command` - (is: String)
-- `process_name` - (is: String)
-- `numprocs` - (is: Integer)
-- `numprocs_start` - (is: Integer)
-- `priority` - (is: Integer)
-- `autostart` - (is: Boolean)
-- `autorestart` - (is: [String, Boolean, Symbol])
-- `startsecs` - (is: Integer)
-- `startretries` - (is: Integer)
-- `exitcodes` - (is: Array)
-- `stopsignal` - (is: [String, Symbol])
-- `stopwaitsec` - (is: Integer)
-- `stopasgroup` - (is: Boolean)
-- `killasgroup` - (is: Boolean)
-- `user` - (is: String)
-- `redirect_stderr` - (is: Boolean)
-- `environment` - (is: Hash)
-- `directory` - (is: [String, Nil])
-- `umask` - (is: [String, Nil])
-- `serverurl` - (is: String)
-- `stdout_logfile` - (is: String)
-- `stdout_logfile_maxbytes` - (is: String)
-- `stdout_logfile_backups` - (is: Integer)
-- `stdout_capture_maxbytes` - (is: String)
-- `stdout_events_enabled` - (is: Boolean)
-- `stderr_logfile` - (is: String)
-- `stderr_logfile_maxbytes` - (is: String)
-- `stderr_logfile_backups` - (is: Integer)
-- `stderr_capture_maxbytes` - (is: String)
-- `stderr_events_enabled` - (is: Boolean)
-- `eventlistener_buffer_size` - (is: Integer)
-- `eventlistener_events` - (is: Array)
-- `eventlistener_result_handler` - (is: String)
-- `fcgi_socket` - (is: String)
-- `fcgi_socket_owner` - (is: [String, Nil])
-- `fcgi_socket_mode` - (is: String)
+| Property                       |        Type        |                    Default Value                     |
+| ------------------------------ | :----------------: | :--------------------------------------------------: |
+| `type` (@required)             |      `String`      |                          ``                          |
+| `command` (@required)          |      `String`      |                          ``                          |
+| `process_name`                 |      `String`      |                 `'%(program_name)s'`                 |
+| `numprocs`                     |     `Integer`      |                         `1`                          |
+| `numprocs_start`               |     `Integer`      |                         `0`                          |
+| `priority`                     |     `Integer`      |                        `999`                         |
+| `autostart`                    |     `Boolean`      |                       `false`                        |
+| `autorestart`                  |     `Boolean`      |                       `false`                        |
+| `startsecs`                    |     `Integer`      |                         `1`                          |
+| `startretries`                 |     `Integer`      |                         `3`                          |
+| `exitcodes`                    |      `Array`       |                       `[0, 2]`                       |
+| `stopsignal`                   | `[String, Symbol]` |                       `:TERM`                        |
+| `stopwaitsec`                  |     `Integer`      |                         `10`                         |
+| `stopasgroup`                  |     `Boolean`      |                        `true`                        |
+| `killasgroup`                  |     `Boolean`      |                        `true`                        |
+| `user`                         |      `String`      |                        `nil`                         |
+| `redirect_stderr`              |     `Boolean`      |                       `false`                        |
+| `environment`                  |       `Hash`       |                         `{}`                         |
+| `directory`                    |  `[String, Nil]`   |                        `nil`                         |
+| `umask`                        |  `[String, Nil]`   |                        `nil`                         |
+| `serverurl`                    |      `String`      |                       `'AUTO'`                       |
+| `stdout_logfile`               |      `String`      |                       `'AUTO'`                       |
+| `stdout_logfile_maxbytes`      |      `String`      |                       `'50mb'`                       |
+| `stdout_logfile_backups`       |     `Integer`      |                         `10`                         |
+| `stdout_capture_maxbytes`      |      `String`      |                        `'0'`                         |
+| `stdout_events_enabled`        |     `Boolean`      |                       `false`                        |
+| `stderr_logfile`               |      `String`      |                       `'AUTO'`                       |
+| `stderr_logfile_maxbytes`      |      `String`      |                       `'50mb'`                       |
+| `stderr_logfile_backups`       |     `Integer`      |                         `10`                         |
+| `stderr_capture_maxbytes`      |      `String`      |                        `'0'`                         |
+| `stderr_events_enabled`        |     `Boolean`      |                       `false`                        |
+| `eventlistener_buffer_size`    |     `Integer`      |                         `10`                         |
+| `eventlistener_events`         |      `Array`       |                     `['EVENT']`                      |
+| `eventlistener_result_handler` |      `String`      |      `'supervisor.dispatchers:default_handler'`      |
+| `fcgi_socket`                  |      `String`      | `'unix:///var/run/supervisor/%(program_name)s.sock'` |
+| `fcgi_socket_owner`            |  `[String, Nil]`   |                        `nil`                         |
+| `fcgi_socket_mode`             |      `String`      |                        `0700`                        |
+| `action`                       |      `Symbol`      |                      `:create`                       |
 
 #### Examples
 
@@ -203,11 +210,16 @@ Creates a group for supervisor.
 #### Actions
 
 - `:create`
+- `:delete`
 
 #### Properties
 
-- `programs` - (is: Array)
-- `priority` - (is: Integer)
+| Property               |   Type    | Default Value |
+| ---------------------- | :-------: | :-----------: |
+| `programs` (@required) |  `Array`  |      ``       |
+| `priority`             | `Integer` |     `999`     |
+| `action`               | `Symbol`  |   `:create`   |
+
 
 #### Examples
 
@@ -225,6 +237,15 @@ Creates Supervisor service for your systems.
 #### Actions
 
 - `:create`
+- `:reload`
+
+#### Properties
+
+
+| Property                      |   Type   |                  Default Value                   |
+| ----------------------------- | :------: | :----------------------------------------------: |
+| `supervisord_executable_path` | `String` | `node['supervisor']['supervisord_default_path']` |
+| `action`                      | `Symbol` |                    `:create`                     |
 
 #### Examples
 
