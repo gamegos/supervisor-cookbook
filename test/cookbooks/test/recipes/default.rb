@@ -1,8 +1,3 @@
-#
-# Cookbook:: gamegos-supervisor
-# Recipe:: test
-#
-# Copyright:: 2018, The Authors, All Rights Reserved.
 supervisor_install '3.3'
 
 supervisor_config 'supervisor'

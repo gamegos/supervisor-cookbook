@@ -17,8 +17,8 @@ platforms:
       image: dokken/ubuntu-18.04
       pid_one_command: /bin/systemd
       intermediate_instructions:
-         - RUN /usr/bin/apt-get update
-         - RUN /usr/bin/apt-get install sudo -y
+        - RUN /usr/bin/apt-get update
+        - RUN /usr/bin/apt-get install sudo -y
 
   - name: centos-7
     driver:
@@ -32,15 +32,16 @@ suites:
     driver:
       chef_version: 12
     run_list:
-      - recipe[gamegos-supervisor::test]
+      - recipe[test::default]
     verifier:
       inspec_tests:
         - test/integration/default
+
   - name: default-chef13
     driver:
       chef_version: 13
     run_list:
-      - recipe[gamegos-supervisor::test]
+      - recipe[test::default]
     verifier:
       inspec_tests:
         - test/integration/default

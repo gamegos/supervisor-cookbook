@@ -23,7 +23,7 @@ suites:
     provisioner:
       product_version: 12
     run_list:
-      - recipe[gamegos-supervisor::test]
+      - recipe[test::default]
     verifier:
       inspec_tests:
         - test/integration/default
@@ -33,7 +33,7 @@ suites:
     provisioner:
       product_version: 13
     run_list:
-      - recipe[gamegos-supervisor::test]
+      - recipe[test::default]
     verifier:
       inspec_tests:
         - test/integration/default

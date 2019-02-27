@@ -1,0 +1,7 @@
+name              'test'
+maintainer        'Fatih Sarhan'
+maintainer_email  'f9n@protonmail.com'
+license           'GPL-3.0'
+description       'Testing cookbook for gamegos-supervisor'
+version           '0.0.1'
+depends           'gamegos-supervisor'
