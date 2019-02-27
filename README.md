@@ -1,5 +1,7 @@
 # gamegos-supervisor
 
+[![Build Status](https://travis-ci.org/gamegos/supervisor-cookbook.svg?branch=master)](https://travis-ci.org/gamegos/supervisor-cookbook)
+
 This cookbook installs and configures [Supervisor](https://github.com/Supervisor/supervisor).
 
 # Requirements
