@@ -15,7 +15,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu-18.04
   - name: centos-7
 
 suites:
@@ -32,6 +32,16 @@ suites:
   - name: default-chef13
     provisioner:
       product_version: 13
+    run_list:
+      - recipe[test::default]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes: { foo: "bar" }
+
+  - name: default-chef14
+    provisioner:
+      product_version: 14
     run_list:
       - recipe[test::default]
     verifier:
