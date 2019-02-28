@@ -8,7 +8,7 @@ chef_version '>= 12.0'
 %w(amazon centos debian redhat ubuntu).each do |os|
   supports os
 end
-version '1.0.0'
+version '1.0.1'
 
 # The `issues_url` points to the location where issues for this cookbook are
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
