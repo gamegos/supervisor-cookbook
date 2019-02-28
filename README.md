@@ -1,6 +1,6 @@
 # gamegos-supervisor
 
-[![Build Status](https://travis-ci.org/gamegos/supervisor-cookbook.svg?branch=master)](https://travis-ci.org/gamegos/supervisor-cookbook) [![Cookbook Version](https://img.shields.io/cookbook/v/gamegos-supervisor.svg)](https://supermarket.chef.io/f9n/gamegos-supervisor)
+[![Build Status](https://travis-ci.org/gamegos/supervisor-cookbook.svg?branch=master)](https://travis-ci.org/gamegos/supervisor-cookbook) [![Cookbook Version](https://img.shields.io/cookbook/v/gamegos-supervisor.svg)](https://supermarket.chef.io/cookbooks/gamegos-supervisor)
 
 This cookbook installs and configures [Supervisor](https://github.com/Supervisor/supervisor).
 
