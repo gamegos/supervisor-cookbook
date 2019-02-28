@@ -17,5 +17,5 @@ Update
 
 Initial release.
 
-- change 0
-- change 1
+- Support Chef13+
+
