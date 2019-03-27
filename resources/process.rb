@@ -74,3 +74,14 @@ action :delete do
     notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end
+
+action :restart do
+  clean_name = new_resource.defined_process_name.downcase.tr(' ', '_')
+  unique_name_for_process = "#{new_resource.type}_#{clean_name}"
+  supervisor_svc = find_resource(:supervisor_service, 'supervisor')
+  declare_resource(:execute, "supervisorctl_restart_#{unique_name_for_process}") do
+    command(lazy { "#{supervisor_svc.supervisord_executable_path}/supervisorctl -c #{node.run_state['supervisor']['config_file']} restart #{new_resource.defined_process_name}" })
+    action :run
+    only_if "#{supervisor_svc.supervisord_executable_path}/supervisorctl -c #{node.run_state['supervisor']['config_file']} avail"
+  end
+end
