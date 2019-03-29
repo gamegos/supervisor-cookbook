@@ -71,6 +71,6 @@ action :create do
     group 'root'
     mode '644'
     variables config: new_resource
-    notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
+    notifies :reread, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end

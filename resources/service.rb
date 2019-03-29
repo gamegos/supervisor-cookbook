@@ -10,6 +10,11 @@ action :create do
 end
 
 action :reload do
+  Chef::Log.warn('The :reload action has been renamed :reread. Please update your cookbook code for the new action')
+  action_reread
+end
+
+action :reread do
   execute 'supervisorctl reread' do
     command(lazy { "#{new_resource.supervisord_executable_path}/supervisorctl -c #{node.run_state['supervisor']['config_file']} reread" })
     action :run

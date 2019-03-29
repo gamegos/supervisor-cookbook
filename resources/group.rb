@@ -15,7 +15,7 @@ action :create do
     group 'root'
     mode '644'
     variables group: new_resource
-    notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
+    notifies :reread, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end
 
@@ -23,6 +23,6 @@ action :delete do
   file 'delete specific group configuration file' do
     path(lazy { "#{node.run_state['supervisor']['directory']}/group_#{new_resource.group_name}.conf" })
     action :delete
-    notifies :reload, find_resource(:supervisor_service, 'supervisor'), :delayed
+    notifies :reread, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end
