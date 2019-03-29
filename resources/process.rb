@@ -59,7 +59,7 @@ action :create do
       name: clean_name,
       service: new_resource
     )
-    notifies :reread, find_resource(:supervisor_service, 'supervisor'), :delayed
+    notifies :update, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end
 
@@ -67,7 +67,7 @@ action :delete do
   file 'delete specific program configuration file' do
     path(lazy { "#{node.run_state['supervisor']['directory']}/#{unique_name_for_process}.conf" })
     action :delete
-    notifies :reread, find_resource(:supervisor_service, 'supervisor'), :delayed
+    notifies :update, find_resource(:supervisor_service, 'supervisor'), :delayed
   end
 end
 
