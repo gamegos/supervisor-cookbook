@@ -21,3 +21,17 @@ action :reread do
     only_if "#{new_resource.supervisord_executable_path}/supervisorctl -c #{node.run_state['supervisor']['config_file']} avail"
   end
 end
+
+action :update do
+  execute 'supervisorctl update' do
+    command(lazy { "#{new_resource.supervisord_executable_path}/supervisorctl -c #{node.run_state['supervisor']['config_file']} update" })
+    action :run
+    only_if "#{new_resource.supervisord_executable_path}/supervisorctl -c #{node.run_state['supervisor']['config_file']} avail"
+  end
+end
+
+action :shutdown do
+  poise_service 'supervisor' do
+    action :stop
+  end
+end
